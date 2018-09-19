@@ -357,53 +357,70 @@ public final class Agrume: UIViewController {
   }
   
   private func newTransform() -> CGAffineTransform {
-    var transform: CGAffineTransform = .identity
-    if initialOrientation == .portrait {
-      switch (currentDeviceOrientation()) {
-      case .landscapeLeft:
-        transform = CGAffineTransform(rotationAngle: .pi / 2)
-      case .landscapeRight:
-        transform = CGAffineTransform(rotationAngle: -(.pi / 2))
-      case .portraitUpsideDown:
-        transform = CGAffineTransform(rotationAngle: .pi)
-      default:
-        break
-      }
-    } else if initialOrientation == .portraitUpsideDown {
-      switch (currentDeviceOrientation()) {
-      case .landscapeLeft:
-        transform = CGAffineTransform(rotationAngle: -(.pi / 2))
-      case .landscapeRight:
-        transform = CGAffineTransform(rotationAngle: .pi / 2)
-      case .portrait:
-        transform = CGAffineTransform(rotationAngle: .pi)
-      default:
-        break
-      }
-    } else if initialOrientation == .landscapeLeft {
-      switch (currentDeviceOrientation()) {
-      case .landscapeRight:
-        transform = CGAffineTransform(rotationAngle: .pi)
-      case .portrait:
-        transform = CGAffineTransform(rotationAngle: -(.pi / 2))
-      case .portraitUpsideDown:
-        transform = CGAffineTransform(rotationAngle: .pi / 2)
-      default:
-        break
-      }
-    } else if initialOrientation == .landscapeRight {
-      switch (currentDeviceOrientation()) {
-      case .landscapeLeft:
-        transform = CGAffineTransform(rotationAngle: .pi)
-      case .portrait:
-        transform = CGAffineTransform(rotationAngle: .pi / 2)
-      case .portraitUpsideDown:
-        transform = CGAffineTransform(rotationAngle: -(.pi / 2))
-      default:
-        break
-      }
+    switch initialOrientation {
+    case .portrait?:
+      return transformPortrait()
+    case .portraitUpsideDown?:
+      return transformPortraitUpsideDown()
+    case .landscapeLeft?:
+      return transformLandscapeLeft()
+    case .landscapeRight?:
+      return transformLandscapeRight()
+    default:
+      return .identity
     }
-    return transform
+  }
+  
+  private func transformPortrait() -> CGAffineTransform {
+    switch currentDeviceOrientation() {
+    case .landscapeLeft:
+      return CGAffineTransform(rotationAngle: .pi / 2)
+    case .landscapeRight:
+      return CGAffineTransform(rotationAngle: -(.pi / 2))
+    case .portraitUpsideDown:
+      return CGAffineTransform(rotationAngle: .pi)
+    default:
+      return .identity
+    }
+  }
+  
+  private func transformPortraitUpsideDown() -> CGAffineTransform {
+    switch currentDeviceOrientation() {
+    case .landscapeLeft:
+      return CGAffineTransform(rotationAngle: -(.pi / 2))
+    case .landscapeRight:
+      return CGAffineTransform(rotationAngle: .pi / 2)
+    case .portrait:
+      return CGAffineTransform(rotationAngle: .pi)
+    default:
+      return .identity
+    }
+  }
+  
+  private func transformLandscapeLeft() -> CGAffineTransform {
+    switch currentDeviceOrientation() {
+    case .landscapeRight:
+      return CGAffineTransform(rotationAngle: .pi)
+    case .portrait:
+      return CGAffineTransform(rotationAngle: -(.pi / 2))
+    case .portraitUpsideDown:
+      return CGAffineTransform(rotationAngle: .pi / 2)
+    default:
+      return .identity
+    }
+  }
+  
+  private func transformLandscapeRight() -> CGAffineTransform {
+    switch currentDeviceOrientation() {
+    case .landscapeLeft:
+      return CGAffineTransform(rotationAngle: .pi)
+    case .portrait:
+      return CGAffineTransform(rotationAngle: .pi / 2)
+    case .portraitUpsideDown:
+      return CGAffineTransform(rotationAngle: -(.pi / 2))
+    default:
+      return .identity
+    }
   }
 
 }
